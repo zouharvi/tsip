@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
 
 import argparse
-import evaluate
+# import evaluate
 import torch
 from transformers import BartTokenizer
 from transformers import BartForConditionalGeneration, Trainer, TrainingArguments
 
-metric = evaluate.load("sari")
+# metric = evaluate.load("sari")
 
 args = argparse.ArgumentParser()
 args.add_argument("--data-train-x", default="data/matchvp_train.complex")
 args.add_argument("--data-train-y", default="data/matchvp_train.simple")
+args.add_argument("--output", default='computed/output/fbasic/')
+args.add_argument("--model", default='facebook/bart-base')
+args.add_argument("--epochs", type=int, default=3)
 args = args.parse_args()
+
 
 def load_file(f):
     with open(f, "r") as f:
         data = [x.rstrip() for x in f.readlines()]
     return data
 
+
 data_train_txt_x = load_file(args.data_train_x)
 data_train_txt_y = load_file(args.data_train_y)
 
-tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
+tokenizer = BartTokenizer.from_pretrained('facebook/bart-base')
 data_train_x = tokenizer(data_train_txt_x, truncation=True, padding=True)
 data_train_y = tokenizer(data_train_txt_y, truncation=True, padding=True)
 # free up memory
 del tokenizer
+
 
 class DatasetWrapper(torch.utils.data.Dataset):
     def __init__(self, inputs, targets):
@@ -46,8 +52,8 @@ class DatasetWrapper(torch.utils.data.Dataset):
 data_train = DatasetWrapper(data_train_x, data_train_y)
 
 training_args = TrainingArguments(
-    output_dir='./computed/output/basic/',
-    num_train_epochs=10,
+    output_dir=args.output,
+    num_train_epochs=args.epochs,
     per_device_train_batch_size=16,
     # per_device_eval_batch_size=1,
     # number of warmup steps for learning rate scheduler
@@ -59,17 +65,16 @@ training_args = TrainingArguments(
     logging_steps=100
 )
 
-model = BartForConditionalGeneration.from_pretrained(
-    'sshleifer/distilbart-cnn-12-6'
-).to("cuda")
+model = BartForConditionalGeneration.from_pretrained(args.model).to("cuda")
+model.train()
 
 trainer = Trainer(
     model=model,
     args=training_args,
     train_dataset=data_train,
     # eval_dataset=data_test,
-    compute_metrics=metric,
+    # compute_metrics=metric,
 )
 trainer.train()
 
-model.save_pretrained("computed/output/checkpoint-final")
+model.save_pretrained(args.output + "/checkpoint-final/")

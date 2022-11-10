@@ -14,12 +14,14 @@ def load_file(f):
         data = [x.rstrip() for x in f.readlines()]
     return data
 
-metric = evaluate.load("sari")
+METRIC = "sari"
+metric = evaluate.load(METRIC)
 
 data_s = load_file(args.source)
 data_p = load_file(args.prediction)
+# data_p = [x.replace(", ", " , ") for x in data_p]
 data_r = load_file(args.reference)
 data_r = [[x] for x in data_r]
 
 score = metric.compute(sources=data_s, predictions=data_p, references=data_r)
-print(f"SARI score: {score['sari']:.1f}%")
+print(f"SARI score: {score[METRIC]:.4f}%")
