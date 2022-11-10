@@ -5,7 +5,7 @@ import argparse
 
 args = argparse.ArgumentParser()
 args.add_argument("-s", "--source", default="data/matchvp_test.complex")
-args.add_argument("-p", "--prediction", default="data/matchvp_test.complex")
+args.add_argument("-p", "--prediction", default="data/matchvp_test.simple")
 args.add_argument("-r", "--reference", default="data/matchvp_test.simple")
 args = args.parse_args()
 
