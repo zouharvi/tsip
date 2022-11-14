@@ -2,6 +2,7 @@
 /data
 /computed
 /logs
+/data_bigrets
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

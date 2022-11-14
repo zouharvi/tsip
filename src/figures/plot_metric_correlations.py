@@ -60,5 +60,5 @@ plt.xticks(
     range(len(data_names_pretty[:-1])),
     data_names_pretty[:-1], rotation=60)
 plt.tight_layout(rect=[0,0,1.07,1], pad=0)
-plt.savefig("computed/figures/metric_correlations.pdf")
+plt.savefig("computed/figures/metric_correlations.pdf ")
 plt.show()
