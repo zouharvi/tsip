@@ -17,4 +17,10 @@ gzip -d sscorpus.gz
 # onestopenglish
 # TODO
 
+# minwiki
+wget -nc https://raw.githubusercontent.com/serenayj/DeSSE/main/MinWiki/matchvp_train.complex
+wget -nc https://raw.githubusercontent.com/serenayj/DeSSE/main/MinWiki/matchvp_train.simple
+wget -nc https://raw.githubusercontent.com/serenayj/DeSSE/main/MinWiki/matchvp_test.complex
+wget -nc https://raw.githubusercontent.com/serenayj/DeSSE/main/MinWiki/matchvp_test.simple
+
 cd ../
