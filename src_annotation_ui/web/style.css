@@ -1,0 +1,14 @@
+* {
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+#phases {
+    text-align: left;
+    width: 300px;
+    line-height: 1.5em;
+}
+
+#phases input {
+    width: 50px;
+    float: right;
+}
