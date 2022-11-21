@@ -13,32 +13,47 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Roboto&display=swap'>
-    <link rel='stylesheet' type='text/css' href='style.css?r=0'>
+    <link rel='stylesheet' type='text/css' href='style.css?r=1'>
 </head>
 
-<body style='text-align: center; margin-bottom: 20px; background-color: #f4f4f4;'>
+<body style='text-align: center; margin-bottom: 20px; background-color: #ffe;'>
     <span style="margin-left: auto; margin-right: auto; font-size: x-large;">Text Simplification In Practice Evaluation</span>
 
     <div id="progress"></div>
 
-    <div>
-        <div id="main_simplified_text_area">
-            capybara
-        </div>
-        <div id="active_response_area">
-            todo
-        </div>
+    <div id="main_simplified_text_area">
+        capybara
+    </div>
+    <div id="active_response_area">
+        todo
     </div>
 
-    <div id="phases">
-        Phases:
+    <br>
+
+    <div id="instruction_area">
+        <b>Instructions:</b>
+
+        Your task in this evaluation is split into three phases. You can start the first phase by pressing the <em>Next</em> button.
+        
         <ol>
-            <li>Reading <span id="phase_read">done</span></li>
-            <li>Answering questions <span id="phase_answer">done</span></li>
-            <li>Evaluating <span id="phase_eval">done</span></li>
+            <li>Reading: Read the test carefully and press <em>Next</em> only after you finished reading.</li>
+            <li>Comprehension: Answer the reading comprehension questions based on the text. You can consult the text while answering them.</li>
+            <li>Evaluation: Answer the questions regarding the text and your confidence in your answers.</li>
         </ol>
 
-        <input id="but_prev" type="button" value="Previous">
+        The <em>Next</em> button will be unlocked only after you answered all questions.
+        In all phases, if you are unsure about some part of the text, you can click an underlined part of the text to simplify it.
+    </div>
+
+    <div id="phases_area">
+        <b>Phases:</b>
+        <ol>
+            <li>Reading <span id="phase_read">done</span></li>
+            <li>Comprehension <span id="phase_answer">done</span></li>
+            <li>Evaluation <span id="phase_eval">done</span></li>
+        </ol>
+
+        <!-- <input id="but_prev" type="button" value="Previous"> -->
         <input id="but_next" type="button" value="Next">
     </div>
 <!-- 
@@ -79,9 +94,13 @@
         </div>
     </div>
 -->
+    <div id="phase_text_before_start" style="display: none;">
+        Press <em>Next</em> to start reading. Make sure you read the instructions before starting.
+    </div>
 
     <!-- <script src='web-source.js?random=<?php echo filemtime('web-source.js'); ?>'></script> -->
     <script src='web-source.js?r=0'></script>
+
 </body>
 
 </html>

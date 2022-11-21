@@ -2,14 +2,67 @@
     font-family: Roboto, Arial, Helvetica, sans-serif;
 }
 
-#phases {
+#main_simplified_text_area, #active_response_area, #phases_area, #instruction_area {
+    vertical-align: top;
+    margin-top: 20px;
+    border: 2px dashed black;
+    padding: 20px;
+    background-color: #fff;
+    display: inline-block;
+
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+#main_simplified_text_area {
+    width: 500px;
+    min-height: 400px;
+    font-size: larger;
+}
+
+
+#active_response_area {
+    width: 500px;
+    min-height: 400px;
+    padding: 20px;
+}
+
+#instruction_area {
+    width: 700px;
+    text-align: left;
+}
+
+#phases_area {
     text-align: left;
     width: 300px;
     line-height: 1.5em;
 }
 
-#phases span {
-    width: 90px;
+#phases_area span {
+    width: 100px;
     float: right;
-    text-align: right;
+    text-align: center;
+}
+
+#phases_area .phase_progress {
+    font-weight: bold;
+    background-color: #fdf;
+}
+
+#phases_area .phase_done {
+    font-style: italic;
+    background-color: #dfd;
+}
+
+#phases_area .phase_locked {
+    font-style: italic;
+    background-color: #ddd;
+}
+
+#but_next {
+    width: 250px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }

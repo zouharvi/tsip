@@ -4,7 +4,7 @@ import { load_data } from './connector'
 import { setup_navigation, load_cur_text } from "./worker_website"
 
 globalThis.data_i = 0;
-globalThis.phase = 0;
+globalThis.phase = -1;
 globalThis.data = null
 
 globalThis.uid = "demo"
