@@ -8,7 +8,8 @@
     line-height: 1.5em;
 }
 
-#phases input {
-    width: 50px;
+#phases span {
+    width: 90px;
     float: right;
+    text-align: right;
 }

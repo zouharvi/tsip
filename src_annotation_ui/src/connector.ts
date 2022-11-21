@@ -1,6 +1,5 @@
 import { DEVMODE } from './globals'
 
-// let SERVER_LOG_ROOT = DEVMODE ? "http://127.0.0.1/" : "https://quest.ms.mff.cuni.cz/mmsg/"
 let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "https://vilda.net/s/att/queues/"
 
 export async function load_data(): Promise<any> {
