@@ -1,6 +1,6 @@
 import { DEVMODE } from './globals'
 
-let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "https://vilda.net/s/att/queues/"
+let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "queues/"
 
 export async function load_data(): Promise<any> {
     let random_v = `?v=${Math.random()}`;

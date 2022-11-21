@@ -1,3 +1,5 @@
+import { getIndicies } from "./utils";
+
 let main_text_area = $("#main_simplified_text_area")
 let main_answer_area = $("#active_response_area")
 
@@ -16,6 +18,7 @@ function update_phase_texts() {
             obj.removeClass(val);
         })
 
+
         if (index == globalThis.phase) {
             obj.text("in progress");
             obj.addClass("phase_progress");
@@ -29,6 +32,79 @@ function update_phase_texts() {
     });
 }
 
+function setup_main_text(text: string) {
+    let replacer = new Map<number, string>();
+    globalThis.data_now["simplifications"].forEach((val, val_i) => {
+        let indicies = getIndicies(val[0], text, true);
+        let chunks = [];
+        let last_text = text;
+        indicies.forEach((index, _) => {
+            chunks.push(last_text.slice(0, index));
+            last_text = last_text.slice(index);
+        })
+        chunks.push(last_text);
+        replacer[val_i] = val[1];
+
+        text = chunks.map((chunk_text: string, index) => {
+            // protect against replacing parts of attributes
+            if (index == 0 || chunk_text.slice(0, val[0].length).includes("\"")) {
+                return chunk_text;
+            }
+            return chunk_text.replace(val[0], `<span class="simplify_u" replace_with="${val_i}">` + val[0] + "</span>");
+        }).join("")
+    });
+    main_text_area.html(text);
+
+    $(".simplify_u").each((_, el) => {
+        $(el).on("click", () => {
+            let replace_with = replacer[Number(el.getAttribute("replace_with"))];
+            $(el).html(replace_with);
+            $(el).removeClass("simplify_u");
+            // refresh triggers
+            setup_main_text(main_text_area.text());
+        })
+    });
+}
+
+function setup_questions_answers() {
+    let output_html = "";
+    let questions = globalThis.data_now["questions"];
+    Object.keys(questions).forEach((question, question_i) => {
+        output_html += question + "<br> <ol type='A'>";
+        questions[question].forEach((answer, answer_i) => {
+            output_html += `<li><input type="radio" name="question_group_${question_i}" id="qa_${question_i}_${answer_i}">`
+            output_html += `<label for="qa_${question_i}_${answer_i}">${answer}</label></li>`
+        });
+        output_html += "</ol>";
+    })
+    main_answer_area.html(output_html);
+}
+
+function setup_human_intrinsic() {
+    let output_html = "";
+    let questions = [
+        "How confident are you in your answers?",
+        "Did the text provide enough information to answer the questions?",
+        "Did the text contain unnecessary information?",
+        "What is the complexity of the text?",
+        "What is the fluency & grammaticality of the text?",
+    ];
+    questions.forEach((question, question_i) => {
+        output_html += `${question}<br>`
+        output_html += `<input class="hi_input_val" type="range" min="0", max="5", step="1" id="val_${question_i}">`
+        output_html += `<span class="hi_input_label" id="label_${question_i}">-</span>`
+        output_html += "<br><br>"
+    });
+    main_answer_area.html(output_html);
+    questions.forEach((question, question_i) => {
+        let range_el = $(`#val_${question_i}`);
+        range_el.on("input change", (el)=> {
+            console.log("sdf")
+            $(`#label_${question_i}`).text(range_el.val() as string);
+        })
+    })
+}
+
 function update_text_and_answers() {
     switch (globalThis.phase) {
         case -1:
@@ -36,17 +112,14 @@ function update_text_and_answers() {
             main_answer_area.text("");
             break;
         case 0:
-            main_text_area.text(globalThis.data_now["text"]);
-            main_answer_area.text("Focus on the reading");
+            setup_main_text(globalThis.data_now["text"]);
             main_answer_area.text("Focus on the reading");
             break;
         case 1:
-            main_text_area.text(globalThis.data_now["text"]);
-            main_answer_area.text("TODO questions");
+            setup_questions_answers();
             break;
         case 2:
-            main_text_area.text(globalThis.data_now["text"]);
-            main_answer_area.text("TODO HI questions");
+            setup_human_intrinsic()
             break;
     }
 }
@@ -55,9 +128,6 @@ function load_cur_text() {
     load_headers()
     update_phase_texts()
     update_text_and_answers()
-
-    // TODO
-    // load_cur_abstract_all_direct();    
 }
 
 // function load_cur_abstract_all_direct() {
@@ -92,29 +162,6 @@ function load_cur_text() {
 //         $("#q_" + title_i.toString()).val(globalThis.data_now["response"][title_i]);
 //     })
 // }
-
-function bind_labels_direct(title_i: number) {
-    $("#q_" + title_i.toString()).on('input change', function () {
-        let val = parseInt($(this).val() as string);
-        globalThis.data_now["response"][title_i] = val;
-
-        let slider_obj_val = $("#q_" + title_i.toString() + "_val");
-        slider_obj_val.text(val)
-    });
-
-    // special handling of default "empty" value
-    $("#q_" + title_i.toString()).on('click', function () {
-        if (globalThis.data_now["response"][title_i] == -1) {
-            globalThis.data_now["response"][title_i] = 0;
-
-            let val = parseInt($(this).val() as string);
-            console.log(val)
-            let slider_obj_val = $("#q_" + title_i.toString() + "_val");
-            slider_obj_val.text(val)
-        }
-    });
-}
-
 
 function setup_navigation() {
     // send current data

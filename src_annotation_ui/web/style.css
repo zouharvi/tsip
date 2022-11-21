@@ -19,13 +19,22 @@
     width: 500px;
     min-height: 400px;
     font-size: larger;
+    text-align: justify;
 }
 
+#main_simplified_text_area .simplify_u:hover {
+    cursor: pointer;
+}
+
+#main_simplified_text_area .simplify_u {
+    text-decoration: underline;
+}
 
 #active_response_area {
     width: 500px;
     min-height: 400px;
     padding: 20px;
+    text-align: left;
 }
 
 #instruction_area {
@@ -36,33 +45,50 @@
 #phases_area {
     text-align: left;
     width: 300px;
-    line-height: 1.5em;
+    line-height: 1.8em;
 }
 
-#phases_area span {
+.phase_progress, .phase_done, .phase_locked {
     width: 100px;
-    float: right;
     text-align: center;
+    border: 2px solid black;
+    padding-bottom: 5px;
+    padding-top: 0px;
+    height: 18px;
+    float: right;
 }
 
 #phases_area .phase_progress {
     font-weight: bold;
     background-color: #fdf;
+    border-color: #cbc;
 }
 
 #phases_area .phase_done {
     font-style: italic;
     background-color: #dfd;
+    border-color: #bcb;
 }
 
 #phases_area .phase_locked {
     font-style: italic;
     background-color: #ddd;
+    border-color: #bbb;
 }
 
 #but_next {
     width: 250px;
+    height: 50px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-top: 22px;
+}
+
+.hi_input_val {
+    margin-left: 150px;
+}
+.hi_input_label {
+    margin-left: 20px;
+    vertical-align: top;
 }
