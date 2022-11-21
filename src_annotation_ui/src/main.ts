@@ -14,9 +14,10 @@ globalThis.uid = "demo"
 // if (globalThis.uid == null) {
 //     let UID_maybe = null
 //     while (UID_maybe == null) {
-//         UID_maybe = prompt("What is your user id? If none was assigned, make up one with alpha characters of length <= 15.")
+//         UID_maybe = prompt("What is your user id?")
 //     }
-//     globalThis.uid = UID_maybe!
+//      // TODO validate
+//     globalThis.uid = UID_maybe!;
 // }
 
 load_data().then((data: any) => {

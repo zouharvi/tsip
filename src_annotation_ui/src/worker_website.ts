@@ -98,8 +98,7 @@ function setup_human_intrinsic() {
     main_answer_area.html(output_html);
     questions.forEach((question, question_i) => {
         let range_el = $(`#val_${question_i}`);
-        range_el.on("input change", (el)=> {
-            console.log("sdf")
+        range_el.on("input change", (el) => {
             $(`#label_${question_i}`).text(range_el.val() as string);
         })
     })

@@ -15,4 +15,4 @@ function getIndicies(needle: string, hay: string, caseSensitive) {
     return indices;
 }
 
-export {getIndicies}
+export { getIndicies }
