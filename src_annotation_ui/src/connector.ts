@@ -1,6 +1,7 @@
 import { DEVMODE } from './globals'
 
 let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "queues/"
+let SERVER_LOG_ROOT = DEVMODE ? "http://127.0.0.1:5000/" : "zouharvi.pythonanywhere.com"
 
 export async function load_data(): Promise<any> {
     let random_v = `?v=${Math.random()}`;
@@ -16,16 +17,20 @@ export async function load_data(): Promise<any> {
     return result
 }
 
-// dumps all the data which is long-term unsustainable but since the image is not part of the payload
-// it's expected to be <100k
-// export async function log_data(): Promise<any> {
-//     let result = await $.ajax(
-//         SERVER_LOG_ROOT + "log",
-//         {
-//             data: JSON.stringify({ data: globalThis.data, uid: globalThis.uid }),
-//             type: 'POST',
-//             contentType: 'application/json',
-//         }
-//     )
-//     return result
-// }
+export async function log_data(data): Promise<any> {
+    console.log(SERVER_LOG_ROOT + "log")
+
+    let result = await $.ajax(
+        SERVER_LOG_ROOT + "log",
+        {
+            data: JSON.stringify({
+                project: "tsip",
+                uid: globalThis.uid,
+                payload: JSON.stringify(data),
+            }),
+            type: 'POST',
+            contentType: 'application/json',
+        }
+    )
+    return result
+}

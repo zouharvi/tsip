@@ -1,3 +1,4 @@
+import { log_data } from "./connector";
 import { getIndicies } from "./utils";
 
 let main_text_area = $("#main_simplified_text_area")
@@ -82,6 +83,15 @@ function setup_questions_answers() {
         output_html += "</ol>";
     })
     main_answer_area.html(output_html);
+
+    questions.forEach(([question, answers], question_i) => {
+        answers.forEach((answer, answer_i) => {
+            let radio_el = $(`#qa_${question_i}_${answer_i}`)
+            radio_el.on("input checked", (el) => {
+                globalThis.data_log.answers_extrinsic[question_i] = answer_i
+            })
+        })
+    })
 }
 
 function setup_human_intrinsic() {
@@ -101,9 +111,10 @@ function setup_human_intrinsic() {
     });
     main_answer_area.html(output_html);
     questions.forEach((question, question_i) => {
-        let range_el = $(`#val_${question_i}`);
+        let range_el = $(`#val_${question_i}`)
         range_el.on("input change", (el) => {
-            $(`#label_${question_i}`).text(range_el.val() as string);
+            $(`#label_${question_i}`).text(range_el.val() as string)
+            globalThis.data_log.answers_intrinsic[question_i] = range_el.val()
         })
     })
 }
@@ -167,13 +178,28 @@ function load_cur_text() {
 // }
 
 function setup_navigation() {
-    // send current data
-    // load next abstract
+    // progress next
     $("#but_next").on("click", () => {
         globalThis.phase += 1;
-        if (globalThis.phase >= 3) {
+        if (globalThis.phase == 0) {
+            globalThis.data_log = {
+                times: [Date.now()],
+                answers_extrinsic: {},
+                answers_intrinsic: {},
+            }
+        } else if (globalThis.phase == 1) {
+            // finish reading phase
+            globalThis.data_log.times.push(Date.now())
+        } else if (globalThis.phase == 2) {
+            // finish extrinsic questions phase
+            globalThis.data_log.times.push(Date.now())
+        } else if (globalThis.phase == 3) {
+            // finish intrinsic questions phase
             globalThis.phase = -1;
             globalThis.data_i += 1;
+
+            globalThis.data_log.times.push(Date.now())
+            log_data(globalThis.data_log)
         }
 
         if (globalThis.data_i >= globalThis.data.length) {
@@ -182,21 +208,8 @@ function setup_navigation() {
         }
 
         globalThis.data_now = globalThis.data[globalThis.data_i];
-        // log_data()
         load_cur_text()
     })
-
-    // $("#but_prev").on("click", () => {
-    //     globalThis.data_i -= 1;
-    //     // modulo
-    //     if (globalThis.data_i < 0) {
-    //         globalThis.data_i = globalThis.data.length - 1;
-    //     }
-
-    //     globalThis.data_now = globalThis.data[globalThis.data_i];
-    //     // log_data()
-    //     load_cur_text()
-    // })
 }
 
 
