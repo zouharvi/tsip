@@ -17,7 +17,7 @@
 
 #main_simplified_text_area {
     width: 500px;
-    min-height: 400px;
+    min-height: 450px;
     font-size: larger;
     text-align: justify;
 }
@@ -31,14 +31,14 @@
 }
 
 #active_response_area {
-    width: 500px;
-    min-height: 400px;
+    width: 650px;
+    min-height: 450px;
     padding: 20px;
     text-align: left;
 }
 
 #instruction_area {
-    width: 700px;
+    width: 850px;
     text-align: left;
 }
 

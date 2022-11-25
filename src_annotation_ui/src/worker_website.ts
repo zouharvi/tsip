@@ -32,7 +32,7 @@ function update_phase_texts() {
     });
 }
 
-function setup_main_text(text: string) {
+function setup_main_text_with_simplifications(text: string) {
     let replacer = new Map<number, string>();
     globalThis.data_now["simplifications"].forEach((val, val_i) => {
         let indicies = getIndicies(val[0], text, true);
@@ -61,17 +61,21 @@ function setup_main_text(text: string) {
             $(el).html(replace_with);
             $(el).removeClass("simplify_u");
             // refresh triggers
-            setup_main_text(main_text_area.text());
+            setup_main_text_with_simplifications(main_text_area.text());
         })
     });
+}
+
+function setup_main_text(text: string) {
+    main_text_area.html(text);
 }
 
 function setup_questions_answers() {
     let output_html = "";
     let questions = globalThis.data_now["questions"];
-    Object.keys(questions).forEach((question, question_i) => {
+    questions.forEach(([question, answers], question_i) => {
         output_html += question + "<br> <ol type='A'>";
-        questions[question].forEach((answer, answer_i) => {
+        answers.forEach((answer, answer_i) => {
             output_html += `<li><input type="radio" name="question_group_${question_i}" id="qa_${question_i}_${answer_i}">`
             output_html += `<label for="qa_${question_i}_${answer_i}">${answer}</label></li>`
         });

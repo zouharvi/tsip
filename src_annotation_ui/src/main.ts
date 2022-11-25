@@ -7,7 +7,7 @@ globalThis.data_i = 0;
 globalThis.phase = -1;
 globalThis.data = null
 
-globalThis.uid = "demo"
+globalThis.uid = "onestopqa_apopka"
 // const urlParams = new URLSearchParams(window.location.search);
 // globalThis.uid = urlParams.get('uid');
 

@@ -4,13 +4,14 @@ let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "queues/"
 
 export async function load_data(): Promise<any> {
     let random_v = `?v=${Math.random()}`;
-    let result = await $.ajax(
+    let result :string = await $.ajax(
         SERVER_DATA_ROOT + globalThis.uid + ".jsonl" + random_v,
         {
             type: 'GET',
             contentType: 'application/text',
         }
     )
+    result = result.trimEnd()
     result = JSON.parse("[" + result.replaceAll("\n", ",") + "]")
     return result
 }
