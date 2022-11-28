@@ -7,9 +7,9 @@ let main_answer_area = $("#active_response_area")
 function load_headers() {
     $("#progress").html(`
         <strong>Progress:</strong> ${globalThis.data_i + 1}/${globalThis.data.length},
-        <strong>UID:</strong> ${globalThis.uid},
-        <strong>mode:</strong> ${globalThis.data_now["mode"]}
-    `)
+        <strong>UID:</strong> ${globalThis.uid}
+        `)
+    // <strong>mode:</strong>${globalThis.data_now["mode"]}
 }
 
 function update_phase_texts() {
@@ -76,6 +76,7 @@ function setup_questions_answers() {
     let output_html = "";
     let questions = globalThis.data_now["questions"];
     questions.forEach(([question, answers], question_i) => {
+        answers.push({"text": "N/A", "aid": -1});
         output_html += question + "<br> <ol type='A'>";
         answers.forEach((answer) => {
             let answer_i = answer["aid"]
