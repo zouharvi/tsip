@@ -18,8 +18,6 @@ export async function load_data(): Promise<any> {
 }
 
 export async function log_data(data): Promise<any> {
-    console.log(SERVER_LOG_ROOT + "log")
-
     let result = await $.ajax(
         SERVER_LOG_ROOT + "log",
         {

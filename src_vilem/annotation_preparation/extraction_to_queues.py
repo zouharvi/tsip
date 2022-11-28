@@ -10,10 +10,10 @@ import random
 
 args = argparse.ArgumentParser()
 args.add_argument(
-    "-i", "--input", default="computed/onestopqa_extraction.jsonl"
+    "-i", "--input", default="computed/onestopqa_extraction_all.jsonl"
 )
 args.add_argument(
-    "-o", "--output", default="computed/queues/onestopqa_UID.jsonl"
+    "-o", "--output", default="src_annotation_ui/web/queues/onestopqa_UID.jsonl"
 )
 args = args.parse_args()
 
@@ -34,7 +34,7 @@ for uid in UIDs:
 
     for line in data:
         questions = [
-            (question, shuffled(answers))
+            (question, shuffled([{"text": v, "aid": i} for i,v  in enumerate(answers)]))
             for question, answers in line["questions"]
         ]
 

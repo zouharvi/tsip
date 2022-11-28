@@ -67,8 +67,9 @@ function setup_main_text_with_simplifications(text: string) {
     });
 }
 
-function setup_main_text(text: string) {
-    main_text_area.html(text);
+function setup_main_text() {
+    let html_text = `<b>${globalThis.data_now["title"]}</b><br>${globalThis.data_now["text"]}`;
+    main_text_area.html(html_text);
 }
 
 function setup_questions_answers() {
@@ -76,45 +77,51 @@ function setup_questions_answers() {
     let questions = globalThis.data_now["questions"];
     questions.forEach(([question, answers], question_i) => {
         output_html += question + "<br> <ol type='A'>";
-        answers.forEach((answer, answer_i) => {
+        answers.forEach((answer) => {
+            let answer_i = answer["aid"]
+            let answer_text = answer["text"]
             output_html += `<li><input type="radio" name="question_group_${question_i}" id="qa_${question_i}_${answer_i}">`
-            output_html += `<label for="qa_${question_i}_${answer_i}">${answer}</label></li>`
+            output_html += `<label for="qa_${question_i}_${answer_i}">${answer_text}</label></li>`
         });
         output_html += "</ol>";
     })
     main_answer_area.html(output_html);
 
     questions.forEach(([question, answers], question_i) => {
-        answers.forEach((answer, answer_i) => {
+        answers.forEach((answer) => {
+            let answer_i = answer["aid"]
             let radio_el = $(`#qa_${question_i}_${answer_i}`)
             radio_el.on("input checked", (el) => {
-                globalThis.data_log.answers_extrinsic[question_i] = answer_i
+                globalThis.data_log.answers_extrinsic[question_i] = answer_i;
+                check_next_lock_status();
             })
         })
     })
 }
 
+const QUESTIONS_HI = [
+    "How confident are you in your answers?",
+    "Did the text provide enough information to answer the questions?",
+    "Did the text contain only necessary information?",
+    "What is the complexity of the text?",
+    "What is the fluency & grammaticality of the text?",
+];
+
 function setup_human_intrinsic() {
     let output_html = "";
-    let questions = [
-        "How confident are you in your answers?",
-        "Did the text provide enough information to answer the questions?",
-        "Did the text contain unnecessary information?",
-        "What is the complexity of the text?",
-        "What is the fluency & grammaticality of the text?",
-    ];
-    questions.forEach((question, question_i) => {
+    QUESTIONS_HI.forEach((question, question_i) => {
         output_html += `${question}<br>`
         output_html += `<input class="hi_input_val" type="range" min="0", max="5", step="1" id="val_${question_i}">`
         output_html += `<span class="hi_input_label" id="label_${question_i}">-</span>`
         output_html += "<br><br>"
     });
     main_answer_area.html(output_html);
-    questions.forEach((question, question_i) => {
+    QUESTIONS_HI.forEach((question, question_i) => {
         let range_el = $(`#val_${question_i}`)
         range_el.on("input change", (el) => {
-            $(`#label_${question_i}`).text(range_el.val() as string)
-            globalThis.data_log.answers_intrinsic[question_i] = range_el.val()
+            $(`#label_${question_i}`).text(range_el.val() as string);
+            globalThis.data_log.answers_intrinsic[question_i] = range_el.val();
+            check_next_lock_status();
         })
     })
 }
@@ -126,7 +133,7 @@ function update_text_and_answers() {
             main_answer_area.text("");
             break;
         case 0:
-            setup_main_text(globalThis.data_now["text"]);
+            setup_main_text();
             main_answer_area.text("Focus on the reading");
             break;
         case 1:
@@ -136,6 +143,7 @@ function update_text_and_answers() {
             setup_human_intrinsic()
             break;
     }
+    check_next_lock_status()
 }
 
 function load_cur_text() {
@@ -144,6 +152,22 @@ function load_cur_text() {
     update_text_and_answers()
 }
 
+function check_next_lock_status() {
+    let target = 0;
+    let answered = 0;
+    switch (globalThis.phase) {
+        case 1:
+            answered = Object.keys(globalThis.data_log["answers_extrinsic"]).length;
+            target = globalThis.data_now["questions"].length
+            break;
+        case 2:
+            answered = Object.keys(globalThis.data_log["answers_intrinsic"]).length;
+            target = QUESTIONS_HI.length
+            break;
+    }
+
+    $("#but_next").prop("disabled", target > answered);
+}
 // function load_cur_abstract_all_direct() {
 //     title_area_table.html("")
 //     title_area_table.append($("<tr><td>Title</td><td>Score</td></tr>"));
@@ -186,6 +210,9 @@ function setup_navigation() {
                 times: [Date.now()],
                 answers_extrinsic: {},
                 answers_intrinsic: {},
+                id: globalThis.data_now["id"],
+                mode: globalThis.data_now["mode"],
+                uid: globalThis.uid,
             }
         } else if (globalThis.phase == 1) {
             // finish reading phase
@@ -203,7 +230,7 @@ function setup_navigation() {
         }
 
         if (globalThis.data_i >= globalThis.data.length) {
-            alert("You completed the whole queue, thanks! Wait a few seconds to finish synchronization.");
+            alert("You completed the whole queue, thanks! Press OK and wait a few seconds to finish synchronization.");
             globalThis.data_i = 0;
         }
 
