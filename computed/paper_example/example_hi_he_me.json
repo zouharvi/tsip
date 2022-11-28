@@ -1,0 +1,10 @@
+{
+    "adequacy": [1, 1, 1, 1, 1, 1],
+    "grammaticality": [1, 1, 1, 1, 1, 1],
+    "simplicity": [0, 0.1, 0.2, 0.7, 0.3, 0.35],
+    "informativity": [1, 1, 1, 0.5, 1, 0.9],
+    "reading times": [24.9, 21.9, 16.4, 9.9, 15.8, 18.7],
+    "human answer correctness": [1, 1, 1, 0.33, 1, 0.67],
+    "human answer speed": [19.1, 12.9, 16.4, 9.9, 8.9, 13.8],
+    "machine answer correctness": [1, 1, 1, 0.33, 1, 0.67]
+}
