@@ -19,8 +19,6 @@ def api_hello_world():
 @app.route('/read')
 def api_read():
     return "Not allowed"
-    # with open("logs.txt", "r") as f:
-    #     return f.read()
 
 
 @app.route('/log', methods=['GET', 'POST'])
@@ -42,7 +40,9 @@ def api_log():
 
     return "OK"
 
-
-app.run()
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=5002)
+# pythonanywhere does not want us to launch the app by ourselves
+# so make sure we don't do that when it's being important and won't
+# block the port
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+# app.run()
