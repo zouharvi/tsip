@@ -25,6 +25,9 @@ def api_read():
 
 @app.route('/log', methods=['GET', 'POST'])
 def api_log():
+    if request.content_type != 'application/json':
+        return "Invalid content type " + request.content_type
+
     data = request.get_json()
     if data["project"] not in allowed_projects:
         return "Invalid project"
@@ -41,3 +44,5 @@ def api_log():
 
 
 app.run()
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5002)

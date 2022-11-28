@@ -1,7 +1,7 @@
 import { DEVMODE } from './globals'
 
 let SERVER_DATA_ROOT = DEVMODE ? "http://127.0.0.1:9000/queues/" : "queues/"
-let SERVER_LOG_ROOT = DEVMODE ? "http://127.0.0.1:5000/" : "zouharvi.pythonanywhere.com"
+let SERVER_LOG_ROOT = DEVMODE ? "http://127.0.0.1:5000/" : "https://zouharvi.pythonanywhere.com/"
 
 export async function load_data(): Promise<any> {
     let random_v = `?v=${Math.random()}`;
@@ -30,5 +30,6 @@ export async function log_data(data): Promise<any> {
             contentType: 'application/json',
         }
     )
+    console.log(result)
     return result
 }

@@ -120,7 +120,7 @@ function setup_human_intrinsic() {
         let range_el = $(`#val_${question_i}`)
         range_el.on("input change", (el) => {
             $(`#label_${question_i}`).text(range_el.val() as string);
-            globalThis.data_log.answers_intrinsic[question_i] = range_el.val();
+            globalThis.data_log.answers_intrinsic[question_i] = parseInt(range_el.val() as string);
             check_next_lock_status();
         })
     })
