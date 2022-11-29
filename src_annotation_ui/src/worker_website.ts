@@ -119,11 +119,18 @@ function setup_human_intrinsic() {
     main_answer_area.html(output_html);
     QUESTIONS_HI.forEach((question, question_i) => {
         let range_el = $(`#val_${question_i}`)
+        range_el.on("click", (el) => {
+            if (!Object.keys(globalThis.data_log.answers_intrinsic).includes(`${question_i}`)){
+                console.log("Clicked the middle for the first time. Setting it to the default value.")
+                range_el.val("3");
+                range_el.trigger("input");
+            }
+        });
         range_el.on("input change", (el) => {
             $(`#label_${question_i}`).text(range_el.val() as string);
             globalThis.data_log.answers_intrinsic[question_i] = parseInt(range_el.val() as string);
             check_next_lock_status();
-        })
+        });
     })
 }
 
