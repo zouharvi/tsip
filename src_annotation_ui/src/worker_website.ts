@@ -1,4 +1,5 @@
 import { log_data } from "./connector";
+import { DEVMODE } from "./globals";
 import { getIndicies } from "./utils";
 
 let main_text_area = $("#main_simplified_text_area")
@@ -76,7 +77,7 @@ function setup_questions_answers() {
     let output_html = "";
     let questions = globalThis.data_now["questions"];
     questions.forEach(([question, answers], question_i) => {
-        answers.push({"text": "N/A", "aid": -1});
+        answers.push({"text": "I don't know", "aid": -1});
         output_html += question + "<br> <ol type='A'>";
         answers.forEach((answer) => {
             let answer_i = answer["aid"]
@@ -160,6 +161,21 @@ function load_cur_text() {
     update_text_and_answers()
 }
 
+function load_thankyou() {
+    // TODO: wait for data sync
+    load_headers()
+    update_phase_texts()
+    let html_text = `Thank you for participating in our study. `;
+    if (globalThis.uid.startsWith("prolific_onestopqa_pilot_1")) {
+        html_text += `<br>Please click <a href="https://app.prolific.co/submissions/complete?cc=C67G3X5Y">this link</a> to go back to Prolific. `
+        html_text += `Alternatively use this code <em>C67G3X5Y</em>.`
+    }
+    main_text_area.html(html_text);
+
+    main_answer_area.text("");
+    $("#but_next").prop("disabled", true);
+}
+
 function check_next_lock_status() {
     let target = 0;
     let answered = 0;
@@ -174,7 +190,7 @@ function check_next_lock_status() {
             break;
     }
 
-    $("#but_next").prop("disabled", target > answered);
+    $("#but_next").prop("disabled", target > answered && !DEVMODE);
 }
 // function load_cur_abstract_all_direct() {
 //     title_area_table.html("")
@@ -238,12 +254,12 @@ function setup_navigation() {
         }
 
         if (globalThis.data_i >= globalThis.data.length) {
-            alert("You completed the whole queue, thanks! Press OK and wait a few seconds to finish synchronization.");
             globalThis.data_i = 0;
+            load_thankyou()
+        } else {
+            globalThis.data_now = globalThis.data[globalThis.data_i];
+            load_cur_text()
         }
-
-        globalThis.data_now = globalThis.data[globalThis.data_i];
-        load_cur_text()
     })
 }
 

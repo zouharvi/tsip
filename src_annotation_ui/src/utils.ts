@@ -15,4 +15,8 @@ function getIndicies(needle: string, hay: string, caseSensitive) {
     return indices;
 }
 
-export { getIndicies }
+function range(start, end) {
+    return Array.from({ length: end - start + 1 }, (_, i) => i)
+}
+
+export { getIndicies, range }

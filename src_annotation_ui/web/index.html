@@ -24,25 +24,16 @@
     <span style="margin-left: auto; margin-right: auto; font-size: x-large;">Text Simplification In Practice Evaluation</span>
 
     <div id="progress"></div>
-
-    <div id="main_simplified_text_area">
-        loading
-    </div>
-    <div id="active_response_area">
-        loading
-    </div>
-
-    <br>
-
+    
     <div id="instruction_area">
         <b>Instructions:</b>
 
         Your task in this evaluation is split into three phases. After reading carefully these guidelines, start the first phase by pressing the <em>Next</em> button.
         
         <ol>
-            <li><b>Reading:</b> Read the test carefully and press <em>Next</em> only after you finished reading.</li>
-            <li><b>Comprehension:</b> Answer the reading comprehension questions based on the text. You can consult the text while answering them.</li>
-            <li><b>Evaluation:</b> Answer the questions regarding the text and your confidence in your answers.</li>
+            <li><b>Reading:</b> Read the text carefully and press <em>Next</em> only after you finished reading.</li>
+            <li><b>Comprehension:</b> Answer the questions based on the text. You can consult the text while answering them.</li>
+            <li><b>Evaluation:</b> Let us know how confident you are in the answers and provide some more details about the questions we asked.</li>
         </ol>
 
         The <em>Next</em> button will be unlocked only after you answered all questions. There is no way to go back to previously finished segments.
@@ -50,13 +41,13 @@
 
         Use the following guidelines in the evaluation phase (0 - least, 5 - most):
         <ul>
-            <li><b>Confidence:</b> 0 - my answers are random, 5 - all my answers are very likely correct</li>
-            <li><b>Answerability:</b> 0 - the text did not help in answering any of the questions, 5 - the text covered directly all the answers</li>
-            <li><b>Necessariness:</b> 0 - the text provided needless details that did not help in understanding the text, 5 - the text was focused on the main points</li>
-            <li><b>Complexity:</b> 0 - the text was difficult to read and I would be able to mark specific parts which need simplifying, 5 - the text was easy to read and it is not possible to simplify it further</li>
-            <li><b>Grammaticality:</b> 0 - the text contains some grammar/fluency/continuity errors, 5 - the text is very grammatical, likely written by a human</li>
+            <li><b>Confidence:</b> 0 - my answers are random, 5 - all my answers are very likely correct.</li>
+            <li><b>Answerability:</b> 0 - the text did not help in answering any of the questions, 5 - the text covered directly all the answers.</li>
+            <li><b>Necessariness:</b> 0 - the text provided needless details that did not help in understanding the text, 5 - the text was focused on the main points.</li>
+            <li><b>Complexity:</b> 0 - the text was difficult to read and I would be able to mark specific parts which need simplifying, 5 - the text was easy to read and it is not possible to simplify it further.</li>
+            <li><b>Grammaticality:</b> 0 - the text contains some grammar/fluency/continuity errors, 5 - the text is very grammatical, likely written by a human.</li>
         </ul>
-        Only if you are very unsure about an answer, select <em>N/A</em>.
+        Only if you are very unsure about an answer, select <em>I don't know</em>.
     </div>
 
     <div id="phases_area">
@@ -71,6 +62,16 @@
         <input id="but_next" type="button" value="Next">
     </div>
 
+    <br>
+
+    <div id="main_simplified_text_area">
+        loading
+    </div>
+    <div id="active_response_area">
+        loading
+    </div>
+
+
     <div id="phase_text_before_start" style="display: none;">
         Press <em>Next</em> to start reading. Make sure you read the instructions before starting.
         <br><br>
@@ -78,7 +79,7 @@
     </div>
 
     <!-- <script src='web-source.js?random=<?php echo filemtime('web-source.js'); ?>'></script> -->
-    <script src='web-source.js?r=3'></script>
+    <script src='web-source.js?r=5'></script>
 </body>
 
 </html>

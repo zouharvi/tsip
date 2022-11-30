@@ -30,9 +30,13 @@ def api_log():
     if data["project"] not in allowed_projects:
         return "Invalid project"
 
+
     # make sure the directory exits
-    path_dir = "data/" + data["project"] + "/"
-    path_file = path_dir + data["uid"] + ".jsonl"
+    path_file = "data/" + data["project"] + "/" + data["uid"] + ".jsonl"
+    path_dir = "/".join(path_file.split("/")[:-1])
+    if ".." in path_file or "~" in path_file:
+        return "Invalid path"
+        
     Path(path_dir).mkdir(parents=True, exist_ok=True)
 
     with open(path_file, "a") as f:
