@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import argparse
+import collections
 import load_data
 import numpy as np
 import scipy.stats as st
@@ -8,12 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import fig_utils
 
-
-args = argparse.ArgumentParser()
-# args.add_argument()
-args = args.parse_args()
-
-data_flat, data_modes = load_data.load_raw()
+_data_flat, data_modes = load_data.load_corpus()
 
 def mean_yerr(data):
     mean = np.mean(data)
@@ -46,12 +41,25 @@ def plot_yerr_data(axis, axis_name, pos, data):
         fmt="o",
     )
 
+data_modes_flat = collections.defaultdict(list)
+for mode, data_local in data_modes.items():
+    # we need to flatten it because some systems were not evaluated by humans on
+    # some texts and those have empty lists in "hihe"
+    data_local = [x for line in data_local for x in line["hihe"]]
+    data_modes_flat[mode] += data_local
+
+# sort by accuracy
+data_modes_flat = dict(sorted(
+    data_modes_flat.items(),
+    key=lambda x: np.average([
+        100*np.average([v == 0 for v in line["answers_extrinsic"].values()])
+        for line in x[1]
+    ]),
+    reverse=True
+))
 
 fig, axs = plt.subplots(3,3,figsize=(16,9))
-for mode_i, (mode, data_local) in enumerate(data_modes.items()):
-    # , gridspec_kw={'height_ratios': [1, 2]}
-    # ax = fig.add_subplot(331+mode_i)
-
+for mode_i, (mode, data_local) in enumerate(data_modes_flat.items()):
     avg_correct = [
         100*np.average([v == 0 for v in line["answers_extrinsic"].values()])
         for line in data_local
@@ -60,7 +68,7 @@ for mode_i, (mode, data_local) in enumerate(data_modes.items()):
         100*np.average([v == -1 for v in line["answers_extrinsic"].values()])
         for line in data_local
     ]
-    ax_acc = axs[mode_i%3][mode_i//3]
+    ax_acc = axs[mode_i//3][mode_i%3]
     ax_time = ax_acc.twinx()
     ax_hi = ax_acc.twinx()
 

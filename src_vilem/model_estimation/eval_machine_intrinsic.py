@@ -16,6 +16,8 @@ def evaluate_cache_wrap(metric):
         cache[metric] = evaluate.load(metric)
     return cache[metric]
 
+def evaluate_empty_wrap(metric):
+    del cache[metric]
 
 def eval_bleu(hyp, data):
     metric = evaluate_cache_wrap("bleu")
