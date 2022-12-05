@@ -77,7 +77,7 @@ function setup_questions_answers() {
     let output_html = "";
     let questions = globalThis.data_now["questions"];
     questions.forEach(([question, answers], question_i) => {
-        answers.push({"text": "I don't know", "aid": -1});
+        answers.push({"text": "the question is not answerable from the text", "aid": -1});
         output_html += question + "<br> <ol type='A'>";
         answers.forEach((answer) => {
             let answer_i = answer["aid"]
@@ -104,9 +104,9 @@ function setup_questions_answers() {
 const QUESTIONS_HI = [
     "How confident are you in your answers?",
     "Did the text provide enough information to answer the questions?",
-    "Did the text contain only necessary information?",
-    "What is the complexity of the text?",
-    "What is the fluency & grammaticality of the text?",
+    "Was the information in the text was important and necessary?",
+    "How easy was the text to read?",
+    "How much was the text <u>free</u> of fluency, stylistic and grammar errors?",
 ];
 
 function setup_human_intrinsic() {
