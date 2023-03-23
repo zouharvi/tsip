@@ -15,7 +15,7 @@ function load_headers() {
 }
 
 function update_phase_texts() {
-    ["#phase_read", "#phase_answer", "#phase_eval"].forEach((id, index) => {
+    ["#phase_task", "#phase_eval"].forEach((id, index) => {
         let obj = $(id);
         ["phase_progress", "phase_done", "phase_locked"].forEach((val, _) => {
             obj.removeClass(val);
@@ -84,7 +84,7 @@ function setup_ordering() {
             onUpdate: function (evt) {
                 // store the new ordering
                 let sentence_list = $("#sentence_list").children()
-                let sentence_order = sentence_list.map((_, domElement: HTMLElement) => domElement.getAttribute("sent_i"))
+                let sentence_order = sentence_list.map((_, domElement: HTMLElement) => parseInt(domElement.getAttribute("sent_i"))).toArray()
                 globalThis.data_log.answers_extrinsic = sentence_order
                 check_next_lock_status();
             },
@@ -102,35 +102,36 @@ function setup_task() {
     }
 }
 
-const QUESTIONS_HI = [
-    "How confident are you in your answers?",
-    "How easy was the text to read? (opposite of complexity)",
-    "How much was the text fluent and grammatical?",
+const QUESTIONS_HI = {
+    "confidence": "How confident are you in your answers?",
+    "complexity": "How easy was the text to read? (opposite of complexity)",
+    "fluency": "How much was the text fluent and grammatical?",
     // "Did the text provide enough information to answer the questions?",
     // "Was the information in the text was important and necessary?",
-];
+}
+const QUESTIONS_HI_KEYS = ["confidence", "fluency", "complexity"]
 
 function setup_human_intrinsic() {
     let output_html = "";
-    QUESTIONS_HI.forEach((question, question_i) => {
-        output_html += `${question}<br>`
-        output_html += `<input class="hi_input_val" type="range" min="0", max="5", step="1" id="val_${question_i}">`
-        output_html += `<span class="hi_input_label" id="label_${question_i}">-</span>`
+    QUESTIONS_HI_KEYS.forEach((question_key) => {
+        output_html += `${QUESTIONS_HI[question_key]}<br>`
+        output_html += `<input class="hi_input_val" type="range" min="0", max="5", step="1" id="val_${question_key}">`
+        output_html += `<span class="hi_input_label" id="label_${question_key}">-</span>`
         output_html += "<br><br>"
     });
     main_answer_area.html(output_html);
-    QUESTIONS_HI.forEach((question, question_i) => {
-        let range_el = $(`#val_${question_i}`)
+    QUESTIONS_HI_KEYS.forEach((question_key) => {
+        let range_el = $(`#val_${question_key}`)
         range_el.on("click", (el) => {
-            if (!Object.keys(globalThis.data_log.answers_intrinsic).includes(`${question_i}`)) {
+            if (!Object.keys(globalThis.data_log.answers_intrinsic).includes(`${question_key}`)) {
                 console.log("Clicked the middle for the first time. Setting it to the default value.")
                 range_el.val("3");
                 range_el.trigger("input");
             }
         });
         range_el.on("input change", (el) => {
-            $(`#label_${question_i}`).text(range_el.val() as string);
-            globalThis.data_log.answers_intrinsic[question_i] = parseInt(range_el.val() as string);
+            $(`#label_${question_key}`).text(range_el.val() as string);
+            globalThis.data_log.answers_intrinsic[question_key] = parseInt(range_el.val() as string);
             check_next_lock_status();
         });
     })
@@ -190,7 +191,7 @@ function check_next_lock_status() {
             break;
         case 1:
             answered = Object.keys(globalThis.data_log["answers_intrinsic"]).length;
-            target = QUESTIONS_HI.length
+            target = QUESTIONS_HI_KEYS.length
             break;
     }
 
@@ -202,12 +203,15 @@ function setup_navigation() {
     $("#but_next").on("click", () => {
         globalThis.phase += 1;
         if (globalThis.phase == 0) {
+            console.log("Starting new log object")
             globalThis.data_log = {
                 times: [Date.now()],
                 answers_extrinsic: {},
                 answers_intrinsic: {},
                 id: globalThis.data_now["id"],
-                mode: globalThis.data_now["mode"],
+                simplification_type: globalThis.data_now["simplification_type"],
+                task: globalThis.data_now["task"],
+                task_data: globalThis.data_now["task_data"],
                 uid: globalThis.uid,
             }
         } else if (globalThis.phase == 1) {
