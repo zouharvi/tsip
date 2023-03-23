@@ -1,0 +1,56 @@
+[tasks]
+
+[[tasks.questions]]
+text = "Who is the Rényi entropy named after?"
+answers = ["Shannon", "Alfréd", "Hartley", "Collision"]
+correct = 1
+
+[[tasks.questions]]
+text = "What does the Rényi entropy generalize in information theory?"
+answers = [
+    "Fractal dimension estimation",
+    "Various notions of entropy",
+    "Generalized dimensions",
+    "Additivity for independent events",
+]
+correct = 1
+
+[[tasks.questions]]
+text = "What happens to the weight of events as α approaches zero?"
+answers = [
+    "They are increasingly weighed according to their probabilities",
+    "They are increasingly weighed regardless of their probabilities",
+    "They are equally weighed regardless of their probabilities",
+    "They are not weighed at all",
+]
+correct = 2
+
+[[tasks.questions]]
+text = "What is the limit for α → 0 for the Rényi entropy?"
+answers = [
+    "The Shannon entropy",
+    "The logarithm of the size of the support of X",
+    "The events of highest probability",
+    "None of the above",
+]
+correct = 1
+
+
+[simplification]
+
+[simplification.ordering]
+text = """
+The Rényi entropy is a way to measure information that's related to different types of entropy. It's named after a man called Alfréd Rényi who wanted to find a way to measure information that worked for lots of different situations. The Rényi entropy is used in something called fractal dimension estimation.
+When the value of a variable called α gets closer to zero, the Rényi entropy starts to count all possible events equally, no matter how likely they are. When α is zero, the Rényi entropy is just the logarithm of the number of possible events. When α is one, the Rényi entropy is the same as something called the Shannon entropy. And when α is very big, the Rényi entropy mostly cares about the most likely events.
+"""
+
+[simplification.original]
+text = """
+In information theory, the Rényi entropy is a quantity that generalizes various notions of entropy, including Hartley entropy, Shannon entropy, collision entropy, and min-entropy. The Rényi entropy is named after Alfréd Rényi, who looked for the most general way to quantify information while preserving additivity for independent events. In the context of fractal dimension estimation, the Rényi entropy forms the basis of the concept of generalized dimensions.
+As α approaches zero, the Rényi entropy increasingly weighs all events with nonzero probability more equally, regardless of their probabilities. In the limit for α → 0, the Rényi entropy is just the logarithm of the size of the support of X. The limit for α → 1 is the Shannon entropy. As α approaches infinity, the Rényi entropy is increasingly determined by the events of highest probability.
+"""
+
+[simplification.questions]
+text = """
+The Rényi entropy is a type of entropy that measures information. It is named after Alfréd Rényi, who wanted to find a way to measure information that was general and worked for different types of events. The Rényi entropy is used in fractal dimension estimation. As the value of alpha changes, the Rényi entropy values different events differently. When alpha is very small, the Rényi entropy values all events equally. When alpha is very large, the Rényi entropy values the events with the highest probability the most. When alpha is 1, the Rényi entropy is the same as the Shannon entropy.
+"""

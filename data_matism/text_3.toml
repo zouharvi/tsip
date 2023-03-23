@@ -1,0 +1,64 @@
+[tasks]
+[[tasks.questions]]
+text = "What is a limit in mathematics?"
+answers = [
+    "The value that a function approaches as the input approaches some value.",
+    "The value that a function approaches as the output approaches some value.",
+    "The value that a function approaches as both the input and output approach some value.",
+    "The value that a function approaches as the derivative approaches some value.",
+]
+correct = 0
+
+[[tasks.questions]]
+text = "What is the importance of limits in calculus and mathematical analysis?"
+answers = [
+    "They are used to define continuity, derivatives, and integrals.",
+    "They are used to define complex numbers and vectors.",
+    "They are used to define trigonometric functions and identities.",
+    "They are used to define algebraic equations and polynomials.",
+]
+correct = 0
+
+[[tasks.questions]]
+text = "How is the limit of a function usually written in formulas?"
+answers = [
+    "lim<sub>x → c</sub> f(x) = L",
+    "lim<sub>L → c</sub> f(x) = x",
+    "lim<sub>x → L</sub> f(x) = c",
+    "lim<sub>c → x</sub> f(x) = L",
+]
+correct = 0
+
+[[tasks.questions]]
+text = "What does f(x) → L as x → c mean?"
+answers = [
+    "f of x tends to L as x tends to c.",
+    "f of x approaches c as x approaches L.",
+    "L of f of x tends to x as c tends to 0.",
+    "L of f of x approaches c as x approaches infinity.",
+]
+correct = 0
+
+[simplification]
+
+[simplification.original]
+text = """
+In mathematics, a limit is the value that a function (or sequence) approaches as the input (or index) approaches some value. Limits are essential to calculus and mathematical analysis, and are used to define continuity, derivatives, and integrals.
+The concept of a limit of a sequence is further generalized to the concept of a limit of a topological net, and is closely related to limit and direct limit in category theory.
+In formulas, a limit of a function is usually written as lim<sub>x → c</sub> f(x) = L  and is read as "the limit of f of x as x approaches c equals L".
+The fact that a function f approaches the limit L as x approaches c is sometimes denoted by a right arrow (→), as in f(x) → L  as  x → c which reads " f of x tends to L as x tends to c". 
+"""
+
+[simplification.ordering]
+text = """
+Limits are values that a function or sequence approaches as the input or index approaches some value.
+They are important in calculus and mathematical analysis to define continuity, derivatives, and integrals.
+The concept of a limit of a sequence is generalized to the concept of a limit of a topological net, and is related to limit and direct limit in category theory.
+In formulas, a limit of a function is written as lim x → c f(x) = L, meaning 'the limit of f of x as x approaches c equals L.'
+The notation f(x) → L as x → c is used to denote that a function f approaches the limit L as x approaches c.
+"""
+
+[simplification.reading]
+text = """
+Limits are values that a function or sequence approaches as the input or index approaches some value. They are important in calculus and mathematical analysis to define continuity, derivatives, and integrals. The concept of a limit of a sequence is generalized to the concept of a limit of a topological net, and is related to limit and direct limit in category theory. In formulas, a limit of a function is written as lim x → c f(x) = L, meaning "the limit of f of x as x approaches c equals L." The notation f(x) → L as x → c is used to denote that a function f approaches the limit L as x approaches c.
+"""

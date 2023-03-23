@@ -1,0 +1,55 @@
+[tasks]
+[[tasks.questions]]
+text = "What is the definition of variance in probability theory and statistics?"
+answers = [
+    "The average value of a set of numbers",
+    "The squared deviation of a random variable from its sample mean",
+    "The expected absolute deviation of a set of numbers",
+    "The measure of how spread out a set of numbers is from their minimum value",
+]
+correct = 1
+
+[[tasks.questions]]
+text = "What is the relationship between variance and standard deviation?"
+answers = [
+    "The variance is the square of the standard deviation",
+    "The variance is equal to the standard deviation",
+    "The standard deviation is the square of the variance",
+    "The standard deviation and the variance are not related",
+]
+correct = 0
+
+[[tasks.questions]]
+text = "What are some of the practical applications of variance in statistics?"
+answers = [
+    "Descriptive statistics and hypothesis testing",
+    "Monte Carlo sampling and goodness of fit",
+    "Statistical inference and covariance analysis",
+    "All of the above",
+]
+correct = 3
+
+[[tasks.questions]]
+text = "What is an advantage of using variance as a measure of dispersion?"
+answers = [
+    "It is easier to calculate than other measures of dispersion",
+    "It has the same units as the random variable",
+    "It is more amenable to algebraic manipulation than other measures of dispersion",
+    "It is less affected by outliers than other measures of dispersion.",
+]
+correct = 2
+
+
+[simplification]
+
+[simplification.original]
+text = """
+In probability theory and statistics, variance is the expectation of the squared deviation of a random variable from its population mean or sample mean. Variance is a measure of dispersion, meaning it is a measure of how far a set of numbers is spread out from their average value. Variance has a central role in statistics, where some ideas that use it include descriptive statistics, statistical inference, hypothesis testing, goodness of fit, and Monte Carlo sampling. Variance is an important tool in the sciences, where statistical analysis of data is common. The variance is the square of the standard deviation, the second central moment of a distribution, and the covariance of the random variable with itself, and it is often represented by σ<sup>2</sup> Var(X) or V(X).
+An advantage of variance as a measure of dispersion is that it is more amenable to algebraic manipulation than other measures of dispersion such as the expected absolute deviation; for example, the variance of a sum of uncorrelated random variables is equal to the sum of their variances. A disadvantage of the variance for practical applications is that, unlike the standard deviation, its units differ from the random variable, which is why the standard deviation is more commonly reported as a measure of dispersion once the calculation is finished.
+"""
+
+[simplification.ordering]
+text = "Variance is a statistical tool that measures how spread out a set of numbers is from their average value. It's often used in probability theory, statistics, and other sciences to analyze data. Variance is represented by the symbol σ<sup>2</sup> or V(X) and is the square of the standard deviation. It has several practical applications, including hypothesis testing and Monte Carlo sampling. One advantage of using variance as a measure of dispersion is that it is easier to manipulate algebraically than other measures of dispersion. However, its units differ from the random variable, so the standard deviation is often used instead."
+
+[simplification.reading]
+text = "Variance is a measure of how far a set of numbers is spread out from their average value. It is found by taking the squared difference of each number from the average, adding them together, and then dividing by the number of values. It has a central role in statistics and is used in descriptive statistics, statistical inference, hypothesis testing, goodness of fit, and Monte Carlo sampling. Variance is represented by σ<sup>2</sup>, Var(X), or V(X). Variance is easier to manipulate algebraically than other measures of dispersion, but its units differ from the original data. Therefore, the standard deviation is often used instead."
