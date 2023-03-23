@@ -9,21 +9,25 @@ globalThis.data = null
 
 const urlParams = new URLSearchParams(window.location.search);
 globalThis.uid = urlParams.get('uid');
+
+// store everything in log
+globalThis.url_data = {}
+urlParams.forEach((val: string, key: string) => globalThis.url_data[key] = val);
+
 // take data_i from GET if available else use 0 as default
-globalThis.data_i = parseInt(urlParams.get("data_i"))-1 || 0;
+globalThis.data_i = parseInt(urlParams.get("data_i")) - 1 || 0;
 
 function prolific_rewrite_uid(uid) {
-    if (uid != "prolific_onestopqa_pilot_1") {
+    if (uid != "prolific_matism") {
         return uid
     }
 
-    let slots = range(0, 99).map((x) => String(x).padStart(2, "0"));
+    let slots = range(0, 20).map((x) => String(x).padStart(1, "0"));
     let slot = slots[Math.floor(Math.random() * slots.length)];
 
-    globalThis.prolific_pid = urlParams.get('prolific_pid');
     console.log(globalThis.prolific_pid)
 
-    return `prolific_onestopqa_pilot_1/s${slot}`
+    return `prolific_matism/s${slot}`
 }
 
 async function get_uid_and_data() {

@@ -18,9 +18,7 @@ export async function load_data(): Promise<any> {
 }
 
 export async function log_data(data): Promise<any> {
-    if (globalThis.prolific_pid != undefined) {
-        data["prolific_pid"] = globalThis.prolific_pid
-    }
+    data["url_data"] = globalThis.url_data
 
     let result = await $.ajax(
         SERVER_LOG_ROOT + "log",
@@ -28,7 +26,6 @@ export async function log_data(data): Promise<any> {
             data: JSON.stringify({
                 project: "tsip",
                 uid: globalThis.uid,
-                prolific_pid: globalThis.prolific_pid,
                 payload: JSON.stringify(data),
             }),
             type: 'POST',
