@@ -1,6 +1,6 @@
 import { DEVMODE } from "./globals"
 export var UID: string
-import { load_data } from './connector'
+import { load_data, log_data } from './connector'
 import { setup_navigation, load_cur_text } from "./worker_website"
 import { range } from "./utils";
 
@@ -22,12 +22,10 @@ function prolific_rewrite_uid(uid) {
         return uid
     }
 
-    let slots = range(0, 20).map((x) => String(x).padStart(1, "0"));
+    let slots = range(0, 19).map((x) => String(x).padStart(2, "0"));
     let slot = slots[Math.floor(Math.random() * slots.length)];
 
-    console.log(globalThis.prolific_pid)
-
-    return `prolific_matism/s${slot}`
+    return `matism/u${slot}`
 }
 
 async function get_uid_and_data() {
@@ -57,3 +55,6 @@ async function get_uid_and_data() {
 }
 
 get_uid_and_data()
+
+
+log_data({})

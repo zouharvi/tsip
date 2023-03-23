@@ -21,14 +21,6 @@
     text-align: justify;
 }
 
-#main_simplified_text_area .simplify_u:hover {
-    cursor: pointer;
-}
-
-#main_simplified_text_area .simplify_u {
-    text-decoration: underline;
-}
-
 #active_response_area {
     width: 650px;
     min-height: 450px;
@@ -90,4 +82,19 @@
 .hi_input_label {
     margin-left: 20px;
     vertical-align: top;
+}
+
+#sentence_list li {
+    border: 2px solid black;
+    cursor: pointer;
+    background-color: #e8dfc5;
+}
+
+#sentence_list li:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+#sentence_list {
+    margin-left: -10px;
+    font-size: larger;
 }

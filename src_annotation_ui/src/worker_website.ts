@@ -1,6 +1,7 @@
 import { log_data } from "./connector";
 import { DEVMODE } from "./globals";
 import { getIndicies } from "./utils";
+import Sortable from "sortablejs";
 
 let main_text_area = $("#main_simplified_text_area")
 let main_answer_area = $("#active_response_area")
@@ -10,7 +11,7 @@ function load_headers() {
         <strong>Progress:</strong> ${globalThis.data_i + 1}/${globalThis.data.length},
         <strong>UID:</strong> ${globalThis.uid}
         `)
-    // <strong>mode:</strong>${globalThis.data_now["mode"]}
+    // <strong>mode:</strong>${globalThis.data_now["simplification_type"]}
 }
 
 function update_phase_texts() {
@@ -34,64 +35,29 @@ function update_phase_texts() {
     });
 }
 
-function setup_main_text_with_simplifications(text: string) {
-    let replacer = new Map<number, string>();
-    globalThis.data_now["simplifications"].forEach((val, val_i) => {
-        let indicies = getIndicies(val[0], text, true);
-        let chunks = [];
-        let last_text = text;
-        indicies.forEach((index, _) => {
-            chunks.push(last_text.slice(0, index));
-            last_text = last_text.slice(index);
-        })
-        chunks.push(last_text);
-        replacer[val_i] = val[1];
-
-        text = chunks.map((chunk_text: string, index) => {
-            // protect against replacing parts of attributes
-            if (index == 0 || chunk_text.slice(0, val[0].length).includes("\"")) {
-                return chunk_text;
-            }
-            return chunk_text.replace(val[0], `<span class="simplify_u" replace_with="${val_i}">` + val[0] + "</span>");
-        }).join("")
-    });
-    main_text_area.html(text);
-
-    $(".simplify_u").each((_, el) => {
-        $(el).on("click", () => {
-            let replace_with = replacer[Number(el.getAttribute("replace_with"))];
-            $(el).html(replace_with);
-            $(el).removeClass("simplify_u");
-            // refresh triggers
-            setup_main_text_with_simplifications(main_text_area.text());
-        })
-    });
-}
-
-function setup_main_text() {
-    let html_text = `<b>${globalThis.data_now["title"]}</b><br>${globalThis.data_now["text"]}`;
-    main_text_area.html(html_text);
+function setup_text() {
+    main_text_area.html(globalThis.data_now["text"]);
 }
 
 function setup_questions_answers() {
+    setup_text()
+
     let output_html = "";
-    let questions = globalThis.data_now["questions"];
-    questions.forEach(([question, answers], question_i) => {
-        answers.push({"text": "the question is not answerable from the text", "aid": -1});
-        output_html += question + "<br> <ol type='A'>";
-        answers.forEach((answer) => {
-            let answer_i = answer["aid"]
-            let answer_text = answer["text"]
+    let questions = globalThis.data_now["task_data"];
+    questions.forEach((question, question_i) => {
+        let answers = question["answers"]
+        answers.push("the question is not answerable from the text");
+        output_html += question["text"] + "<br> <ol type='A'>";
+        answers.forEach((answer: string, answer_i: number) => {
             output_html += `<li><input type="radio" name="question_group_${question_i}" id="qa_${question_i}_${answer_i}">`
-            output_html += `<label for="qa_${question_i}_${answer_i}">${answer_text}</label></li>`
+            output_html += `<label for="qa_${question_i}_${answer_i}">${answer}</label></li>`
         });
         output_html += "</ol>";
     })
     main_answer_area.html(output_html);
 
-    questions.forEach(([question, answers], question_i) => {
-        answers.forEach((answer) => {
-            let answer_i = answer["aid"]
+    questions.forEach((question, question_i) => {
+        question["answers"].forEach((answer: string, answer_i: number) => {
             let radio_el = $(`#qa_${question_i}_${answer_i}`)
             radio_el.on("input checked", (el) => {
                 globalThis.data_log.answers_extrinsic[question_i] = answer_i;
@@ -101,12 +67,47 @@ function setup_questions_answers() {
     })
 }
 
+function setup_ordering() {
+    let sentences: Array<string> = globalThis.data_now["task_data"]["sentences"]
+    main_text_area.html("Reorder the sentences into correct order (dragging).");
+
+    let output_html = "<ol id='sentence_list'>";
+    output_html += sentences.map((val: string, val_i: number) => `<li sent_i=${val_i}>${val}</li>`).join("\n")
+    output_html += "</ol>"
+    main_answer_area.html(output_html);
+
+    Sortable.create(
+        $('#sentence_list').get(0),
+        {
+            animation: 150,
+            ghostClass: 'blue-background-class',
+            onUpdate: function (evt) {
+                // store the new ordering
+                let sentence_list = $("#sentence_list").children()
+                let sentence_order = sentence_list.map((_, domElement: HTMLElement) => domElement.getAttribute("sent_i"))
+                globalThis.data_log.answers_extrinsic = sentence_order
+                check_next_lock_status();
+            },
+        }
+    );
+}
+
+function setup_task() {
+    if (globalThis.data_now["task"] == "reading") {
+        setup_questions_answers();
+    } else if (globalThis.data_now["task"] == "ordering") {
+        setup_ordering()
+    } else {
+        throw Error(`Unknown task ${globalThis.data_now["task"]}`)
+    }
+}
+
 const QUESTIONS_HI = [
     "How confident are you in your answers?",
-    "Did the text provide enough information to answer the questions?",
-    "Was the information in the text was important and necessary?",
-    "How easy was the text to read?",
-    "How much was the text <u>free</u> of fluency, stylistic and grammar errors?",
+    "How easy was the text to read? (opposite of complexity)",
+    "How much was the text fluent and grammatical?",
+    // "Did the text provide enough information to answer the questions?",
+    // "Was the information in the text was important and necessary?",
 ];
 
 function setup_human_intrinsic() {
@@ -121,7 +122,7 @@ function setup_human_intrinsic() {
     QUESTIONS_HI.forEach((question, question_i) => {
         let range_el = $(`#val_${question_i}`)
         range_el.on("click", (el) => {
-            if (!Object.keys(globalThis.data_log.answers_intrinsic).includes(`${question_i}`)){
+            if (!Object.keys(globalThis.data_log.answers_intrinsic).includes(`${question_i}`)) {
                 console.log("Clicked the middle for the first time. Setting it to the default value.")
                 range_el.val("3");
                 range_el.trigger("input");
@@ -142,13 +143,11 @@ function update_text_and_answers() {
             main_answer_area.text("");
             break;
         case 0:
-            setup_main_text();
-            main_answer_area.text("Focus on the reading");
+            setup_task();
             break;
         case 1:
-            setup_questions_answers();
-            break;
-        case 2:
+            // make sure the original text is visible
+            setup_text()
             setup_human_intrinsic()
             break;
     }
@@ -166,9 +165,9 @@ function load_thankyou() {
     load_headers()
     update_phase_texts()
     let html_text = `Thank you for participating in our study. `;
-    if (globalThis.uid.startsWith("prolific_onestopqa_pilot_1")) {
-        html_text += `<br>Please click <a href="https://app.prolific.co/submissions/complete?cc=C67G3X5Y">this link</a> to go back to Prolific. `
-        html_text += `Alternatively use this code <em>C67G3X5Y</em>.`
+    if (globalThis.uid.startsWith("matism")) {
+        html_text += `<br>Please click <a href="https://app.prolific.co/submissions/complete?cc=TODO">this link</a> to go back to Prolific. `
+        html_text += `Alternatively use this code <em>TODO</em>.`
     }
     main_text_area.html(html_text);
 
@@ -180,11 +179,16 @@ function check_next_lock_status() {
     let target = 0;
     let answered = 0;
     switch (globalThis.phase) {
-        case 1:
+        case 0:
             answered = Object.keys(globalThis.data_log["answers_extrinsic"]).length;
-            target = globalThis.data_now["questions"].length
+            if (globalThis.data_now["task"] == "reading") {
+                target = globalThis.data_now["task_data"].length
+            } else if (globalThis.data_now["task"] == "ordering") {
+                // require at least one interaction
+                target = 1
+            }
             break;
-        case 2:
+        case 1:
             answered = Object.keys(globalThis.data_log["answers_intrinsic"]).length;
             target = QUESTIONS_HI.length
             break;
@@ -192,38 +196,6 @@ function check_next_lock_status() {
 
     $("#but_next").prop("disabled", target > answered && !DEVMODE);
 }
-// function load_cur_abstract_all_direct() {
-//     title_area_table.html("")
-//     title_area_table.append($("<tr><td>Title</td><td>Score</td></tr>"));
-
-//     globalThis.data_now["titles_order"].forEach((title_order: number, title_i: number) => {
-//         let new_an = $(`
-//             <tr>
-//                 <td>• ${globalThis.data_now["titles"][title_order]}</td>
-//                 <td><span id="q_${title_i}_val">x</span><input id="q_${title_i}" type="range" min="0" max="4" step="1"></td>
-//             </tr>
-//         `)
-//         title_area_table.append(new_an);
-//         bind_labels_direct(title_i);
-//     })
-
-
-//     if (!globalThis.data_now.hasOwnProperty("response")) {
-//         globalThis.data_now["response"] = []
-//         globalThis.data_now["titles_order"].forEach((title: string) => {
-//             // set default response
-//             globalThis.data_now["response"].push(-1);
-//         });
-
-//         // space for comments
-//         globalThis.data_now["response"].push("")
-//     }
-
-//     // resets values
-//     globalThis.data_now["titles_order"].forEach((title: string, title_i: number) => {
-//         $("#q_" + title_i.toString()).val(globalThis.data_now["response"][title_i]);
-//     })
-// }
 
 function setup_navigation() {
     // progress next
@@ -239,12 +211,9 @@ function setup_navigation() {
                 uid: globalThis.uid,
             }
         } else if (globalThis.phase == 1) {
-            // finish reading phase
-            globalThis.data_log.times.push(Date.now())
-        } else if (globalThis.phase == 2) {
             // finish extrinsic questions phase
             globalThis.data_log.times.push(Date.now())
-        } else if (globalThis.phase == 3) {
+        } else if (globalThis.phase == 2) {
             // finish intrinsic questions phase
             globalThis.phase = -1;
             globalThis.data_i += 1;

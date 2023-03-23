@@ -18,6 +18,8 @@ export async function load_data(): Promise<any> {
 }
 
 export async function log_data(data): Promise<any> {
+    console.log(data)
+    console.log(globalThis.url_data)
     data["url_data"] = globalThis.url_data
 
     let result = await $.ajax(
