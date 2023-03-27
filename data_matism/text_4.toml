@@ -1,0 +1,75 @@
+[tasks]
+[[tasks.questions]]
+text = "What is a bit?"
+answers = [
+"A binary symbol used in computing or digital communications",
+"A unit of time used in computing or digital communications",
+"A type of storage device used in computing or digital communications",
+"A type of physical state used in computing or digital communications",
+]
+correct = 0
+
+[[tasks.questions]]
+text = "What is the meaning of the term 'bit'?"
+answers = [
+    "A unit of time used in computing or digital communications",
+    "A combination of 'binary' and 'digit'",
+    "A type of storage device used in computing or digital communications",
+    "A type of physical state used in computing or digital communications",
+]
+correct = 1
+
+[[tasks.questions]]
+text = "Which of the following is NOT a common representation of the two possible values of a bit?"
+answers = [
+    "1/0",
+    "true/false",
+    "yes/no",
+    "red/green",
+]
+correct = 3
+
+[[tasks.questions]]
+text = "What is a nibble?"
+answers = [
+    "A group of eight bits",
+    "A string of four bits",
+    "A type of physical state used in computing or digital communications",
+    "A type of storage device used in computing or digital communications",
+]
+correct = 1
+
+[simplification]
+
+[simplification.original]
+text = """
+The bit is the most basic unit of information in computing and digital communications.
+The bit also means binary storage in computing or a binary symbol (data) in digital communications into which a bit, as a unit, of information may be stored or encoded.
+The name is a portmanteau of binary digit.
+The bit represents a logical state with one of two possible values. These values are most commonly represented as either "1" or "0", but other representations such as true/false, yes/no, on/off, or +/− are also commonly used.
+The relation between these values and the physical states of the underlying storage or device is a matter of convention, and different assignments may be used even within the same device or program.
+It may be physically implemented with a two-state device.
+A contiguous group of binary digits is commonly called a bit string, a bit vector, or a single-dimensional (or multi-dimensional) bit array.
+A group of eight bits is called one byte, but historically the size of the byte is not strictly defined.
+Frequently, half, full, double and quadruple words consist of a number of bytes which is a low power of two.
+A string of four bits is a nibble. 
+"""
+
+[simplification.ordering]
+text = """
+In computing and digital communications, the most basic unit of information is called a bit.
+It's a binary symbol that can store or encode one unit of information.
+The name "bit" comes from combining "binary" and "digit".
+A bit can represent one of two values, usually shown as "1" or "0", but other symbols like "yes/no" or "on/off" are also used.
+How a bit is physically stored or used is decided by the program or device.
+A group of eight bits is called a byte, and a string of four bits is called a nibble.
+"""
+
+[simplification.reading]
+text = """
+A "bit" is the smallest piece of information in computers and digital communication.
+It's like a switch that can either be "on" or "off," represented by "1" or "0."
+Other ways of representing these two values are also used.
+A group of eight bits is called a "byte," and a group of four bits is called a "nibble."
+Different devices and programs may use different ways of representing these values.
+"""

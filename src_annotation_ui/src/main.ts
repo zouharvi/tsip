@@ -55,6 +55,3 @@ async function get_uid_and_data() {
 }
 
 get_uid_and_data()
-
-
-log_data({})

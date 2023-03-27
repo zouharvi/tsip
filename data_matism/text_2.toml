@@ -24,7 +24,7 @@ text = "What are some of the practical applications of variance in statistics?"
 answers = [
     "Descriptive statistics and hypothesis testing",
     "Monte Carlo sampling and goodness of fit",
-    "Statistical inference and covariance analysis",
+    "Measure of dispersion",
     "All of the above",
 ]
 correct = 3

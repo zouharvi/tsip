@@ -86,6 +86,7 @@ function setup_ordering() {
                 let sentence_list = $("#sentence_list").children()
                 let sentence_order = sentence_list.map((_, domElement: HTMLElement) => parseInt(domElement.getAttribute("sent_i"))).toArray()
                 globalThis.data_log.answers_extrinsic = sentence_order
+                console.log(sentence_order)
                 check_next_lock_status();
             },
         }
@@ -167,8 +168,8 @@ function load_thankyou() {
     update_phase_texts()
     let html_text = `Thank you for participating in our study. `;
     if (globalThis.uid.startsWith("matism")) {
-        html_text += `<br>Please click <a href="https://app.prolific.co/submissions/complete?cc=TODO">this link</a> to go back to Prolific. `
-        html_text += `Alternatively use this code <em>TODO</em>.`
+        html_text += `<br>Please click <a href="https://app.prolific.co/submissions/complete?cc=C67G3X5Y">this link</a> to go back to Prolific. `
+        html_text += `Alternatively use this code <em>C67G3X5Y</em>.`
     }
     main_text_area.html(html_text);
 
