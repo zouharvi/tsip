@@ -58,7 +58,7 @@ In formulas, a limit of a function is written as lim x → c f(x) = L, meaning '
 The notation f(x) → L as x → c is used to denote that a function f approaches the limit L as x approaches c.
 """
 
-[simplification.reading]
+[simplification.questions]
 text = """
 Limits are values that a function or sequence approaches as the input or index approaches some value. They are important in calculus and mathematical analysis to define continuity, derivatives, and integrals. The concept of a limit of a sequence is generalized to the concept of a limit of a topological net, and is related to limit and direct limit in category theory. In formulas, a limit of a function is written as lim x → c f(x) = L, meaning "the limit of f of x as x approaches c equals L." The notation f(x) → L as x → c is used to denote that a function f approaches the limit L as x approaches c.
 """

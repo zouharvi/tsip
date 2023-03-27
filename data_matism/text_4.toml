@@ -65,7 +65,7 @@ How a bit is physically stored or used is decided by the program or device.
 A group of eight bits is called a byte, and a string of four bits is called a nibble.
 """
 
-[simplification.reading]
+[simplification.questions]
 text = """
 A "bit" is the smallest piece of information in computers and digital communication.
 It's like a switch that can either be "on" or "off," represented by "1" or "0."
