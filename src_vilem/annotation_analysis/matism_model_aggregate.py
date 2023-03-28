@@ -7,6 +7,7 @@ from scipy.stats import spearmanr
 import numpy as np
 import jezecek.fig_utils
 import matplotlib.pyplot as plt
+import scipy.stats as st
 
 data = [
     json.loads(x)
@@ -35,6 +36,13 @@ def compute_success(line):
 def perm_distance(A, B):
     return 1-np.average([abs(a_i-B.index(a))/len(A) for a_i, a in enumerate(A)])
 
+def conf_interval(data):
+    return st.t.interval(
+        confidence=0.90, df=len(data)-1,
+        loc=np.mean(data),
+        scale=st.sem(data)
+    )
+
 data_aggregate = collections.defaultdict(list)
 for line in data:
     line["success"] = compute_success(line)
@@ -62,9 +70,68 @@ for line in data:
     elif line["task"] == "questions":
         line["success"] = (line["success"]-min_questions)/(max_questions-min_questions)
 
-print()
 
-for level_type in ["expert", "nonexpert"]:
-    print("\n", level_type)
-    for key, val in data_aggregate.items():
-        print(key, np.average([line["success"] for line in val if line["url_data"]["level"] == level_type]))
+# plotting
+plt.figure(figsize=(3.5, 2))
+succ_questions = []
+succ_ordering = []
+conf_questions = []
+conf_ordering = []
+
+for key, vals in data_aggregate.items():
+    conf_questions.append(conf_interval([line["success"] for line in vals if line["task"] == "questions"]))
+    val = np.average([line["success"] for line in vals if line["task"] == "questions"])
+    succ_questions.append(val)
+for key, vals in data_aggregate.items():
+    conf_ordering.append(conf_interval([line["success"] for line in vals if line["task"] == "ordering"]))
+    val = np.average([line["success"] for line in vals if line["task"] == "ordering"])
+    succ_ordering.append(val)
+
+BAR_STYLE = {
+    "width": 0.4,
+    "linewidth": 2,
+    "edgecolor": "black",
+}
+
+plt.bar(
+    [x-0.2 for x in range(len(succ_questions))],
+    succ_questions,
+    label="Questions task",
+    **BAR_STYLE
+)
+plt.scatter(
+    2*[x-0.2 for x in range(len(succ_questions))],
+    [x[0] for x in conf_questions]+[x[1] for x in conf_questions],
+    color="black",
+    marker="_"
+)
+
+plt.bar(
+    [x+0.2 for x in range(len(succ_ordering))],
+    succ_ordering,
+    label="Ordering task",
+    **BAR_STYLE
+)
+plt.scatter(
+    2*[x+0.2 for x in range(len(succ_questions))],
+    [x[0] for x in conf_ordering]+[x[1] for x in conf_ordering],
+    color="black",
+    marker="_"
+)
+
+plt.ylim(0, 1)
+
+plt.xticks(
+    range(len(data_aggregate.keys())),
+    list(data_aggregate.keys())
+)
+plt.xlabel("Text simplification model")
+plt.ylabel("Task success")
+
+plt.legend(
+    loc="lower left"
+)
+
+plt.tight_layout(pad=0)
+plt.savefig("computed/figures/model_aggregate.png", dpi=200)
+plt.show()

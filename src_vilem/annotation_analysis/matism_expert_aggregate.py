@@ -7,6 +7,7 @@ from scipy.stats import spearmanr
 import numpy as np
 import jezecek.fig_utils
 import matplotlib.pyplot as plt
+import scipy.stats as st
 
 data = [
     json.loads(x)
@@ -35,6 +36,13 @@ def compute_success(line):
 def perm_distance(A, B):
     return 1-np.average([abs(a_i-B.index(a))/len(A) for a_i, a in enumerate(A)])
 
+def conf_interval(data):
+    return st.t.interval(
+        confidence=0.90, df=len(data)-1,
+        loc=np.mean(data),
+        scale=st.sem(data)
+    )
+
 data_aggregate = collections.defaultdict(list)
 for line in data:
     line["success"] = compute_success(line)
@@ -62,9 +70,64 @@ for line in data:
     elif line["task"] == "questions":
         line["success"] = (line["success"]-min_questions)/(max_questions-min_questions)
 
-print()
+# plotting
+plt.figure(figsize=(3.5, 2))
+succ_expert = []
+succ_nonexpert = []
+conf_expert = []
+conf_nonexpert = []
 
-for level_type in ["expert", "nonexpert"]:
-    print("\n", level_type)
-    for key, val in data_aggregate.items():
-        print(key, np.average([line["success"] for line in val if line["url_data"]["level"] == level_type]))
+for key, val in data_aggregate.items():
+    conf_expert.append(conf_interval([line["success"] for line in val if line["url_data"]["level"] == "expert"]))
+    val = np.average([line["success"] for line in val if line["url_data"]["level"] == "expert"])
+    succ_expert.append(val)
+for key, val in data_aggregate.items():
+    conf_nonexpert.append(conf_interval([line["success"] for line in val if line["url_data"]["level"] == "nonexpert"]))
+    val = np.average([line["success"] for line in val if line["url_data"]["level"] == "nonexpert"])
+    succ_nonexpert.append(val)
+
+BAR_STYLE = {
+    "width": 0.4,
+    "linewidth": 2,
+    "edgecolor": "black",
+}
+
+plt.bar(
+    [x-0.2 for x in range(len(succ_expert))],
+    succ_expert,
+    label="Expert",
+    **BAR_STYLE
+)
+plt.scatter(
+    2*[x-0.2 for x in range(len(conf_expert))],
+    [x[0] for x in conf_expert]+[x[1] for x in conf_expert],
+    color="black",
+    marker="_"
+)
+
+plt.bar(
+    [x+0.2 for x in range(len(succ_nonexpert))],
+    succ_nonexpert,
+    label="Nonexpert",
+    **BAR_STYLE
+)
+plt.scatter(
+    2*[x+0.2 for x in range(len(conf_nonexpert))],
+    [x[0] for x in conf_nonexpert]+[x[1] for x in conf_nonexpert],
+    color="black",
+    marker="_"
+)
+plt.xticks(
+    range(len(data_aggregate.keys())),
+    list(data_aggregate.keys())
+)
+plt.xlabel("Text simplification model")
+plt.ylabel("Task success (overall)")
+
+plt.legend(
+    loc="lower left"
+)
+
+plt.tight_layout(pad=0)
+plt.savefig("computed/figures/expert_aggregate.png", dpi=200)
+plt.show()
