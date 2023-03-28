@@ -94,7 +94,7 @@ function setup_ordering() {
 }
 
 function setup_task() {
-    if (globalThis.data_now["task"] == "reading") {
+    if (globalThis.data_now["task"] == "questions") {
         setup_questions_answers();
     } else if (globalThis.data_now["task"] == "ordering") {
         setup_ordering()
@@ -183,7 +183,7 @@ function check_next_lock_status() {
     switch (globalThis.phase) {
         case 0:
             answered = Object.keys(globalThis.data_log["answers_extrinsic"]).length;
-            if (globalThis.data_now["task"] == "reading") {
+            if (globalThis.data_now["task"] == "questions") {
                 target = globalThis.data_now["task_data"].length
             } else if (globalThis.data_now["task"] == "ordering") {
                 // require at least one interaction

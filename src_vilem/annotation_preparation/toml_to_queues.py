@@ -19,9 +19,9 @@ for i in range(20):
 
         lineout["simplification_type"] = random.choice(list(text["simplification"].keys()))
         lineout["text"] = text["simplification"][lineout["simplification_type"]]["text"]
-        lineout["task"] = random.choice(["reading", "ordering"])
+        lineout["task"] = random.choice(["questions", "ordering"])
 
-        if lineout["task"] == "reading":
+        if lineout["task"] == "questions":
             lineout["task_data"] = text["tasks"]["questions"]
         elif lineout["task"] == "ordering":
             sents = list(enumerate(split_sentence([lineout["text"]])))
