@@ -76,9 +76,12 @@ plt.xlabel("Text simplification model")
 plt.ylabel("Task duration (s)")
 
 plt.legend(
-    loc="lower left"
+    loc="lower left",
+    edgecolor="black", facecolor="white", fancybox=False,
+    framealpha=0.9
 )
 
 plt.tight_layout(pad=0)
-plt.savefig("computed/figures/model_aggregate_time.png", dpi=200)
+# plt.savefig("computed/figures/model_aggregate_time.png", dpi=200)
+plt.savefig("computed/figures/model_aggregate_time.pdf")
 plt.show()
