@@ -72,7 +72,7 @@ for line in data:
 
 
 # plotting
-plt.figure(figsize=(3.5, 2))
+plt.figure(figsize=(3.5, 1.5))
 succ_questions = []
 succ_ordering = []
 conf_questions = []
@@ -129,9 +129,11 @@ plt.xlabel("Text simplification model")
 plt.ylabel("Task success")
 
 plt.legend(
-    loc="lower left",
+    loc=(0, 0),
     edgecolor="black", facecolor="white", fancybox=False,
-    framealpha=0.9
+    framealpha=0.9,
+    labelspacing=0.2,
+    borderpad=0.2,
 )
 
 plt.tight_layout(pad=0)

@@ -37,7 +37,7 @@ for line in data:
 
 
 # plotting
-plt.figure(figsize=(3.5, 2))
+plt.figure(figsize=(3.5, 1.5))
 succ_questions = []
 succ_ordering = []
 
@@ -73,15 +73,17 @@ plt.xticks(
     list(data_aggregate.keys())
 )
 plt.xlabel("Text simplification model")
-plt.ylabel("Task duration (s)")
+plt.ylabel("Task duration (s)   ")
 
 plt.legend(
-    loc="lower left",
+    loc=(0, 0),
     edgecolor="black", facecolor="white", fancybox=False,
-    framealpha=0.9
+    framealpha=0.9,
+    labelspacing=0.2,
+    borderpad=0.2,
 )
 
-plt.tight_layout(pad=0)
+plt.tight_layout(pad=0.1)
 # plt.savefig("computed/figures/model_aggregate_time.png", dpi=200)
 plt.savefig("computed/figures/model_aggregate_time.pdf")
 plt.show()

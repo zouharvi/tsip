@@ -31,7 +31,7 @@ for line in data:
     data_aggregate[line["simplification_type"]].append(line)
 
 # plotting
-plt.figure(figsize=(3.5, 2))
+plt.figure(figsize=(3.5, 1.5))
 succ_confidence = []
 conf_confidence = []
 succ_complexity = []
@@ -63,7 +63,7 @@ BAR_STYLE = {
 plt.bar(
     [x-0.3 for x in range(len(succ_confidence))],
     succ_confidence,
-    label="Confidence",
+    label="Conf.",
     **BAR_STYLE
 )
 plt.scatter(
@@ -76,7 +76,7 @@ plt.scatter(
 plt.bar(
     [x for x in range(len(succ_complexity))],
     succ_complexity,
-    label="Complexity",
+    label="Compl.",
     **BAR_STYLE
 )
 plt.scatter(
@@ -104,15 +104,19 @@ plt.xticks(
     list(data_aggregate.keys())
 )
 plt.xlabel("Text simplification model")
-plt.ylabel("Human annotation")
+plt.ylabel("Human annotation          ")
 
 plt.legend(
-    loc="lower left",
+    loc=(0, 0),
     edgecolor="black", facecolor="white", fancybox=False,
-    framealpha=0.9
+    framealpha=0.9,
+    labelspacing=0.2,
+    borderpad=0.2,
+    ncol=3,
+    columnspacing=0.9
 )
 
-plt.tight_layout(pad=0)
+plt.tight_layout(pad=0.2, rect=(0, 0, 1.05, 1))
 # plt.savefig("computed/figures/model_aggregate_intrinsic.png", dpi=200)
 plt.savefig("computed/figures/model_aggregate_intrinsic.pdf")
 plt.show()

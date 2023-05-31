@@ -71,7 +71,7 @@ for line in data:
         line["success"] = (line["success"]-min_questions)/(max_questions-min_questions)
 
 # plotting
-plt.figure(figsize=(3.5, 2))
+plt.figure(figsize=(3.5, 1.5))
 succ_expert = []
 succ_nonexpert = []
 conf_expert = []
@@ -122,15 +122,20 @@ plt.xticks(
     list(data_aggregate.keys())
 )
 plt.xlabel("Text simplification model")
-plt.ylabel("Task success (overall)")
+plt.ylabel("Task success\n(overall)")
 
 plt.legend(
-    loc="lower left",
+    loc=(0, 0),
     edgecolor="black", facecolor="white", fancybox=False,
-    framealpha=0.9
+    framealpha=0.9,
+    labelspacing=0.2,
+    borderpad=0.2,
+    ncol=3,
+    columnspacing=0.9,
 )
 
-plt.tight_layout(pad=0)
+
+plt.tight_layout(pad=0.2)
 # plt.savefig("computed/figures/expert_aggregate.png", dpi=200)
 plt.savefig("computed/figures/expert_aggregate.pdf")
 plt.show()
